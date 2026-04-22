@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 Awesome Screen Recorder - The Ultimate Collection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #334155;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-opensource: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-commercial: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(245, 158, 11, 0.05) 0%, transparent 70%);
+            animation: bgShift 20s ease-in-out infinite;
+        }
+
+        @keyframes bgShift { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+
+        .particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; } 90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header.scrolled { padding: 0.75rem 2rem; background: rgba(15, 23, 42, 0.95); }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            width: 40px; height: 40px;
+            background: var(--gradient-1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+        .header-actions { display: flex; align-items: center; gap: 1rem; }
+
+        .lang-toggle {
+            display: flex;
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 0.25rem;
+            border: 1px solid var(--border);
+        }
+
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            background: transparent;
+            color: var(--text-secondary);
+            border: none;
+        }
+
+        .lang-btn.active { background: var(--primary); color: white; }
+        .lang-btn:hover:not(.active) { color: var(--text-primary); }
+
+        .github-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .github-btn:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
+
+        .main-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 80px;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 2rem;
+            top: 100px;
+            width: 280px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            padding-right: 1rem;
+        }
+
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+        .nav-section { margin-bottom: 1.5rem; }
+
+        .nav-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+            padding-left: 0.75rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .nav-link:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            transform: translateX(4px);
+        }
+
+        .nav-link.active {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+        }
+
+        .nav-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+
+        .nav-badge {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.5rem;
+            background: var(--gradient-opensource);
+            color: white;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .nav-badge.commercial { background: var(--gradient-commercial); }
+
+        .content { margin-left: 320px; padding: 2rem 3rem 4rem; min-width: 0; }
+
+        .hero { text-align: center; padding: 4rem 0 3rem; position: relative; }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50px;
+            color: var(--primary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.6s ease 0.1s both;
+        }
+
+        .hero-title .gradient-text {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            animation: fadeInUp 0.6s ease 0.2s both;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            animation: fadeInUp 0.6s ease 0.3s both;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .stat-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-glow); }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-label { font-size: 0.875rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section { margin-bottom: 4rem; }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-icon {
+            width: 48px; height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border-radius: 12px;
+        }
+
+        .section-icon.opensource { background: var(--gradient-opensource); }
+        .section-icon.commercial { background: var(--gradient-commercial); }
+
+        .section-title { font-size: 1.75rem; font-weight: 700; }
+
+        .section-count {
+            font-size: 0.875rem;
+            padding: 0.25rem 0.75rem;
+            background: var(--bg-card);
+            border-radius: 50px;
+            color: var(--text-muted);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.75rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .tool-card:hover::before { opacity: 1; }
+
+        .tool-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .tool-logo {
+            width: 56px; height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            font-size: 1.5rem;
+            background: var(--bg-card-hover);
+            border: 1px solid var(--border);
+        }
+
+        .tool-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tool-stars {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .tool-type {
+            display: inline-flex;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .tool-type.opensource { background: rgba(16, 185, 129, 0.2); color: var(--secondary); }
+        .tool-type.commercial { background: rgba(245, 158, 11, 0.2); color: var(--accent); }
+        .tool-type.free { background: rgba(99, 102, 241, 0.2); color: var(--primary); }
+        .tool-type.archived { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+        .tool-platforms { display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap; }
+
+        .platform-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            background: var(--bg-card-hover);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .tool-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .tool-features { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+
+        .feature-tag {
+            padding: 0.35rem 0.75rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .feature-tag:hover { background: rgba(99, 102, 241, 0.2); color: var(--text-primary); }
+
+        .tool-pricing {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg-card-hover);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-label { font-size: 0.75rem; color: var(--text-muted); }
+        .pricing-value { font-size: 0.9rem; font-weight: 600; color: var(--secondary); font-family: 'JetBrains Mono', monospace; }
+
+        .tool-links { display: flex; gap: 0.75rem; }
+
+        .tool-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .tool-link.primary { background: var(--primary); color: white; }
+        .tool-link.primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+        .tool-link.secondary { background: var(--bg-card-hover); color: var(--text-secondary); border: 1px solid var(--border); }
+        .tool-link.secondary:hover { color: var(--text-primary); border-color: var(--text-muted); }
+
+        .search-container { position: relative; margin-bottom: 2rem; }
+
+        .search-box {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .filters { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .filter-btn:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .jump-nav { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap; }
+
+        .jump-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .jump-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-glow); }
+        .jump-btn.opensource { border-color: var(--secondary); }
+        .jump-btn.opensource:hover { background: rgba(16, 185, 129, 0.1); }
+        .jump-btn.commercial { border-color: var(--accent); }
+        .jump-btn.commercial:hover { background: rgba(245, 158, 11, 0.1); }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-table th {
+            background: var(--bg-card-hover);
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .comparison-table tr:last-child td { border-bottom: none; }
+        .comparison-table tr:hover td { background: rgba(99, 102, 241, 0.05); }
+
+        .guide-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .guide-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .guide-item {
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.75rem;
+            background: var(--bg-card-hover);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+
+        .guide-item:hover { transform: translateX(8px); background: rgba(99, 102, 241, 0.1); }
+        .guide-question { color: var(--text-secondary); font-size: 0.95rem; flex: 1; }
+        .guide-answer { color: var(--primary); font-weight: 600; font-size: 0.9rem; }
+
+        .footer {
+            text-align: center;
+            padding: 3rem;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+
+        .footer-content { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+
+        .footer-link { color: var(--text-muted); font-size: 0.9rem; cursor: pointer; text-decoration: none; }
+        .footer-link:hover { color: var(--primary); }
+        .footer-copy { color: var(--text-muted); font-size: 0.85rem; }
+
+        .scroll-progress {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            background: var(--gradient-1);
+            z-index: 1001;
+            transition: width 0.1s ease;
+        }
+
+        .fade-in { animation: fadeIn 0.5s ease both; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .slide-up { animation: slideUp 0.5s ease both; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .highlight { animation: highlightPulse 2s ease; }
+        @keyframes highlightPulse {
+            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.5); }
+            50% { box-shadow: 0 0 30px 10px rgba(99, 102, 241, 0.3); }
+            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar { display: none; }
+            .content { margin-left: 0; padding: 1.5rem; }
+            .tools-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 2.5rem; }
+            .hero-stats { flex-direction: column; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 2.5s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 4.5s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 1.5s;"></div>
+    </div>
+
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <header class="header" id="header">
+        <div class="logo">
+            <div class="logo-icon">🎬</div>
+            <span data-en="Awesome Screen Recorder" data-ch="精选录屏工具">Awesome Screen Recorder</span>
+        </div>
+        <div class="header-actions">
+            <div class="lang-toggle">
+                <button class="lang-btn active" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="ch">中文</button>
+            </div>
+            <a href="https://github.com/your-username/awesome-screen-recorder" class="github-btn" target="_blank">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.82 1.305 3.51.99.105-.78.42-1.305.765-1.605-2.67-.3-5.47-1.335-5.47-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.3 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.545 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.47 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                <span data-en="GitHub" data-ch="GitHub">GitHub</span>
+            </a>
+        </div>
+    </header>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="nav-section">
+            <div class="nav-title" data-en="Quick Jump" data-ch="快速导航">Quick Jump</div>
+            <a href="#hero" class="nav-link" data-section="hero"><span class="nav-icon">🏠</span><span data-en="Home" data-ch="首页">Home</span></a>
+            <a href="#search" class="nav-link" data-section="search"><span class="nav-icon">🔍</span><span data-en="Search" data-ch="搜索">Search</span></a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-title" data-en="Open Source" data-ch="开源工具">Open Source</div>
+            <a href="#obs" class="nav-link"><span class="nav-icon">🎥</span><span>OBS Studio</span><span class="nav-badge">71k+</span></a>
+            <a href="#sharex" class="nav-link"><span class="nav-icon">📤</span><span>ShareX</span><span class="nav-badge">36k+</span></a>
+            <a href="#screentogif" class="nav-link"><span class="nav-icon">🎞️</span><span>ScreenToGif</span><span class="nav-badge">26k+</span></a>
+            <a href="#ffmpeg" class="nav-link"><span class="nav-icon">⌨️</span><span>FFmpeg</span><span class="nav-badge">58k+</span></a>
+            <a href="#openscreen" class="nav-link"><span class="nav-icon">🪟</span><span>Open ScreenRecorder</span><span class="nav-badge">27</span></a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-title" data-en="Commercial" data-ch="商业工具">Commercial</div>
+            <a href="#loom" class="nav-link"><span class="nav-icon">💜</span><span>Loom</span><span class="nav-badge commercial">$15/mo</span></a>
+            <a href="#camtasia" class="nav-link"><span class="nav-icon">🎓</span><span>Camtasia</span><span class="nav-badge commercial">$179/yr</span></a>
+            <a href="#screenflow" class="nav-link"><span class="nav-icon">🍎</span><span>ScreenFlow</span><span class="nav-badge commercial">$199</span></a>
+            <a href="#bandicam" class="nav-link"><span class="nav-icon">🎮</span><span>Bandicam</span><span class="nav-badge commercial">$33/yr</span></a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-title" data-en="Resources" data-ch="资源">Resources</div>
+            <a href="#comparison" class="nav-link"><span class="nav-icon">📊</span><span data-en="Comparison" data-ch="对比">Comparison</span></a>
+            <a href="#guide" class="nav-link"><span class="nav-icon">🧭</span><span data-en="Guide" data-ch="指南">Guide</span></a>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <div class="content">
+            <section class="hero" id="hero">
+                <div class="hero-badge">
+                    <span>⭐</span>
+                    <span data-en="Curated collection of 40+ screen recording tools" data-ch="精选收录 40+ 录屏工具">Curated collection of 40+ screen recording tools</span>
+                </div>
+                <h1 class="hero-title">
+                    <span data-en="The Ultimate" data-ch="终极">The Ultimate</span>
+                    <span class="gradient-text" data-en="Screen Recorder" data-ch="录屏工具">Screen Recorder</span>
+                    <span data-en="Collection" data-ch="合集">Collection</span>
+                </h1>
+                <p class="hero-subtitle" data-en="Discover the best screen recording tools for every need — from open-source powerhouses to enterprise-grade solutions. Updated for 2025." data-ch="探索适合各种需求的最佳录屏工具——从开源神器到企业级解决方案。2025 年最新更新。">
+                    Discover the best screen recording tools for every need — from open-source powerhouses to enterprise-grade solutions. Updated for 2025.
+                </p>
+
+                <div class="jump-nav">
+                    <a href="#opensource" class="jump-btn opensource"><span></span>🌱</span><span data-en="Open Source" data-ch="开源工具">Open Source</span><span style="color: var(--secondary);">13 tools</span></a>
+                    <a href="#commercial" class="jump-btn commercial"><span>💰</span><span data-en="Commercial" data-ch="商业工具">Commercial</span><span style="color: var(--accent);">20+ tools</span></a>
+                    <a href="#comparison" class="jump-btn"><span>📊</span><span data-en="Compare All" data-ch="对比全部">Compare All</span></a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-item"><span class="stat-number">40+</span><span class="stat-label" data-en="Tools Listed" data-ch="收录工具">Tools Listed</span></div>
+                    <div class="stat-item"><span class="stat-number">200k+</span><span class="stat-label" data-en="GitHub Stars" data-ch="GitHub 星数">GitHub Stars</span></div>
+                    <div class="stat-item"><span class="stat-number">🆓</span><span class="stat-label" data-en="Free Options" data-ch="免费选项">Free Options</span></div>
+                </div>
+            </section>
+
+            <section id="search" class="fade-in">
+                <div class="search-container">
+                    <input type="text" class="search-box" id="searchInput" placeholder="🔍 Search tools by name, platform, or feature...">
+                </div>
+                <div class="filters">
+                    <button class="filter-btn active" data-filter="all" data-en="All Tools" data-ch="全部工具">All Tools</button>
+                    <button class="filter-btn" data-filter="opensource" data-en="Open Source" data-ch="开源">Open Source</button>
+                    <button class="filter-btn" data-filter="commercial" data-en="Commercial" data-ch="商业">Commercial</button>
+                    <button class="filter-btn" data-filter="free" data-en="Free" data-ch="免费">Free</button>
+                    <button class="filter-btn" data-filter="windows" data-en="Windows" data-ch="Windows">Windows</button>
+                    <button class="filter-btn" data-filter="macos" data-en="macOS" data-ch="macOS">macOS</button>
+                    <button class="filter-btn" data-filter="linux" data-en="Linux" data-ch="Linux">Linux</button>
+                </div>
+            </section>
+
+            <section id="opensource" class="section">
+                <div class="section-header">
+                    <div class="section-icon opensource">🌱</div>
+                    <h2 class="section-title" data-en="Open Source Tools" data-ch="开源工具">Open Source Tools</h2>
+                    <span class="section-count">13 tools</span>
+                </div>
+
+                <div class="tools-grid" id="opensourceGrid">
+                    <article class="tool-card" id="obs" data-type="opensource" data-platforms="windows,macos,linux" data-price="free">
+                        <div class="tool-header">
+                            <div class="tool-logo">🎥</div>
+                            <div class="tool-info">
+                                <div class="tool-name">OBS Studio <span class="tool-stars">⭐ 71.5k</span></div>
+                                <div class="tool-platforms">
+                                    <span class="platform-badge">🪟 Windows</span>
+                                    <span class="platform-badge">🍎 macOS</span>
+                                    <span class="platform-badge">🐧 Linux</span>
+                                </div>
+                            </div>
+                            <span class="tool-type opensource">Open Source</span>
+                        </div>
+                        <p class="tool-description" data-en="The undisputed king of free screen recording and live streaming. Feature-rich, plugin ecosystem, used by millions worldwide." data-ch="免费录屏和直播的无冕之王。功能丰富，插件生态庞大，被全球数百万创作者使用。">
+                            The undisputed king of free screen recording and live streaming. Feature-rich, plugin ecosystem, used by millions worldwide.
+                        </p>
+                        <div class="tool-features">
+                            <span class="feature-tag">Live Streaming</span>
+                            <span class="feature-tag">Scene Editor</span>
+                            <span class="feature-tag">Audio Mixer</span>
+                            <span class="feature-tag">Plugin API</span>
+                            <span class="feature-tag">Studio Mode</span>
+                        </div>
+                        <div class="tool-pricing">
+                            <span class="pricing-label" data-en="License:" data-ch="许可证：">License:</span>
+                            <span class="pricing-value">GPL-2.0</span>
+                            <span style="margin-left: 1rem;" class="pricing-label" data-en="Price:" data-ch="价格：">Price:</span>
+                            <span class="pricing-value" style="color: var(--secondary);">100% FREE</span>
+                        </div>
+                        <div class="tool-links">
+                            <a href="https://obsproject.com" target="_blank" class="tool-link primary">🌐 <span data-en="Official Site" data-ch="官网">Official Site</span></a>
+                            <a href="https://github.com/obsproject/obs-studio" target="_blank" class="tool-link secondary">📦 GitHub</a>
+                        </div>
+                    </article>
+
+                    <article class="tool-card" id="sharex" data-type="opensource" data-platforms="windows" data-price="free">
+                        <div class="tool-header">
+                            <div class="tool-logo" style="background: linear-gradient(135deg, #00d4aa, #0099cc);">📤</div>
+                            <div class="tool-info">
+                                <div class="tool-name">ShareX <span class="tool-stars">⭐ 36k</span></div>
+                                <div class="tool-platforms"><span class="platform-badge">🪟 Windows Only</span></div>
+                            </div>
+                            <span class="tool-type opensource">Open Source</span>
+                        </div>
+                        <p class="tool-description" data-en="The Swiss Army knife of Windows screen capture. Screenshots, recordings, GIFs, auto uploads with 50+ destinations." data-ch="Windows 屏幕捕获的瑞士军刀。截图、录屏、GIF、自动上传支持 50+ 目标。">
+                            The Swiss Army knife of Windows screen capture. Screenshots, recordings, GIFs, auto uploads with 50+ destinations.
+                        </p>
+                        <div class="tool-features">
+                            <span class="feature-tag">Screen Recording</span>
+                            <span class="feature-tag">GIF Capture</span>
+                            <span class="feature-tag">Auto Upload</span>
+                            <span class="feature-tag">Workflows</span>
+                            <span class="feature-tag">50+ Destinations</span>
+                        </div>
+                        <div class="tool-pricing">
+                            <span class="pricing-label" data-en="License:" data-ch="许可证：">License:</span>
+                            <span class="pricing-value">GPL-3.0</span>
+                            <span style="margin-left: 1rem;" class="pricing-label" data-en="Price:" data-ch="价格：">Price:</span>
+                            <span class="pricing-value" style="color: var(--secondary);">100% FREE</span>
+                        </div>
+                        <div class="tool-links">
+                            <a href="https://getsharex.com" target="_blank" class="tool-link primary">🌐 <span data-en="Official Site" data-ch="官网">Official Site</span></a>
+                            <a href="https://github.com/ShareX/ShareX" target="_blank" class="tool-link secondary">📦 GitHub</a>
+                        </div>
+                    </article>
+
+                    <article class="tool-card" id="screentogif" data-type="opensource" data-platforms="windows" data-price="free">
+                        <div class="tool-header">
+                            <div class="tool-logo" style="background: linear-gradient(135deg, #ff6b6b, #feca57);">🎞️</div>
+                            <div class="tool-info">
+                                <div class="tool-name">ScreenToGif <span class="tool-stars">⭐ 26.6k</span></div>
+                                <div class="tool-platforms"><span class="platform-badge">🪟 Windows Only</span></div>
+                            </div>
+                            <span class="tool-type opensource">Open Source</span>
+                        </div>
+                        <p class="tool-description" data-en="Record your screen, edit frames, export as GIF/APNG/video/PSD. Perfect for bug reports and quick demos." data-ch="录制屏幕，编辑帧，导出为 GIF/APNG/视频/PSD。非常适合 Bug 报告和快速演示。">
+                            Record your screen, edit frames, export as GIF/APNG/video/PSD. Perfect for bug reports and quick demos.
+                        </p>
+                        <div class="tool-features">
+                            <span class="feature-tag">GIF Export</span>
+                            <span class="feature-tag">Frame Editor</span>
+                            <span class="feature-tag">APNG Support</span>
+                            <span class="feature-tag">Video Export</span>
+                            <span class="feature-tag">Annotation</span>
+                        </div>
+                        <div class="tool-pricing">
+                            <span class="pricing-label" data-en="License:" data-ch="许可证：">License:</span>
+                            <span class="pricing-value">MS-PL</span>
+                            <span style="margin-left: 1rem;" class="pricing-label" data-en="Price:" data-ch="价格：">Price:</span>
+                            <span class="pricing-value" style="color: var(--secondary);">100% FREE</span>
+                        </div>
+                        <div class="tool-links">
+                            <a href="https://www.screentogif.com" target="_blank" class="tool-link primary">🌐 <span data-en="Official Site" data-ch="官网">Official Site</span></a>
+                            <a href="https://github.com/NickeManarin/ScreenToGif" target="_blank" class="tool-link secondary">📦 GitHub</a>
+                        </div>
+                    </article>
+
+                    <article class="tool-card" id="ffmpeg" data-type="opensource" data-platforms="windows,macos,linux" data-price="free">
+                        <div class="tool-header">
+                            <div class="tool-logo" style="background: linear-gradient(135deg, #2d3436, #636e72);">⌨️</div>
+                            <div class="tool-info">
+                                <div class="tool-name">FFmpeg <span class="tool-stars">⭐ 58.7k</span></div>
+                                <div class="tool-platforms"><span class="platform-badge">All Platforms</span></div>
+                            </div>
+                            <span class="tool-type opensource">CLI Tool</span>
+                        </div>
+                        <p class="tool-description" data-en="The multimedia Swiss Army knife. Record screen with commands, convert formats, stream live. Used by OBS, VLC, Chrome internally." data-ch="多媒体瑞士军刀。命令行录屏，转换格式，直播推流。OBS、VLC、Chrome 都在内部使用。">
+                            The multimedia Swiss Army knife. Record screen with commands, convert formats, stream live. Used by OBS, VLC, Chrome internally.
+                        </p>
+                        <div class="tool-features">
+                            <span class="feature-tag">Screen Capture</span>
+                            <span class="feature-tag">Format Conversion</span>
+                            <span class="feature-tag">Live Streaming</span>
+                            <span class="feature-tag">Audio Processing</span>
+                            <span class="feature-tag">CLI</span>
+                        </div>
+                        <div class="tool-pricing">
+                            <span class="pricing-label" data-en="License:" data-ch="许可证：">License:</span>
+                            <span class="pricing-value">LGPL/GPL</span>
+                            <span style="margin-left: 1rem;" class="pricing-label" data-en="Price:" data-ch="价格：">Price:</span>
+                            <span class="pricing-value" style="color: var(--secondary);">100% FREE</span>
+                        </div>
+                        <div class="tool-links">
+                            <a href="https://ffmpeg.org" target="_blank" class="tool-link primary">🌐 <span data-en="Official Site" data-ch="官网">Official Site</span></a>
+                            <a href="https://github.com/FFmpeg/FFmpeg" target="_blank" class="tool-link secondary">📦 GitHub</a>
+                        </div>
+                    </article>
+
+                    <article class="tool-card" id="openscreen" data-type="opensource" data-platforms="windows" data-price="free">
+                        <div class="tool-header">
+                            <div class="tool-logo" style="background: linear-gradient(135deg, #0078d4, #00bcf2);">🪟</div>
+                            <div class="tool-info">
+                                <div class="tool-name">Open ScreenRecorder <span class="tool-stars">⭐ 27</span></div>
+                                <div class="tool-platforms"><span class="platform-badge">🪟 Windows UWP</span></div>
+                            </div>
+                            <span class="tool-type opensource">Open Source</span>
+                        </div>
+                        <p class="tool-description" data-en="Modern UWP screen recorder with clean, touch-friendly interface. Built for Windows 10/11 with native integration." data-ch="现代化 UWP 录屏工具，界面简洁支持触摸。专为 Windows 10/11 构建，原生集成。">
+                            Modern UWP screen recorder with clean, touch-friendly interface. Built for Windows 10/11 with native integration.
+                        </p>
+                        <div class="tool-features">
+                            <span class="feature-tag">UWP Native</span>
+                            <span class="feature-tag">Touch UI</span>
+                            <span class="feature-tag">Modern UI</span>
+                            <span class="feature-tag">Windows 11</span>
+                            <span class="feature-tag">Free</span>
+                        </div>
+                        <div class="tool-pricing">
+                            <span class="pricing-label" data-en="License:" data-ch="许可证：">License:</span>
+                            <span class="pricing-value">MIT</span>
+                            <span style="margin-left: 1rem;" class="pricing-label" data-en="Price:" data-ch="价格：">Price:</span>
+                            <span class="pricing-value" style="color: var(--secondary);">100% FREE</span>
+                        </div>
+                        <div class="tool-links">
+                            <a href="https://github.com/Misfits-Rebels-Outcasts/Open_ScreenRecorder" target="_blank" class="tool-link primary">📦 GitHub</a>
+                        </div>
+                    </article>
+
+                    <article class="tool-card" id="vokoscreenng" data-type="opensource" data-platforms="windows,linux" data-price="free">
+                        <div class="tool-header">
+                            <div class="tool-logo" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">🖥️</div>
+                            <div class="tool-info">
+                                <div class="tool-name">VokoscreenNG <span class="tool-stars">⭐ 1.4k</span></div>
+                                <div class="tool-platforms"><span class="platform-badge">🪟 Windows</span><span class="platform-badge">🐧 Linux</span></div>
+                            </div>
+                            <span class="tool-type opensource">Open Source</span>
+                        </div>
+                        <p class="tool-description" data-en="Easy-to-use recorder with webcam overlay, magnifier, system audio. Qt-based with Wayland support for Linux." data-ch="简单易用，支持摄像头叠加、放大、系统音频。基于 Qt，Linux 支持 Wayland。">
+                            Easy-to-use recorder with webcam overlay, magnifier, system audio. Qt-based with Wayland support for Linux.
+                        </p>
+                        <div class="tool-features">
+                            <span class="feature-tag">Webcam Overlay</span>
+                            <span class="feature-tag">Magnifier</span>
+                            <span class="feature-tag">System Audio</span>
+                            <span class="feature-tag">Wayland</span>
+                            <span class="feature-tag">Qt-based</span>
+                        </div>
+                        <div class="tool-pricing">
+                            <span class="pricing-label" data-en="License:" data-ch="许可证：">License:</span>
+                            <span class="pricing-value">GPL-2.0</span>
+                            <span style="margin-left: 1rem;" class="pricing-label" data-en="Price:" data-ch="价格：">Price:</span>
+                            <span class="pricing-value" style="color: var(--secondary);">100% FREE</span>
+                        </div>
+                        <div class="tool-links">
+                            <a href="https://vokoscreenng.org" target="_blank" class="tool-link primary">🌐 <span data-en="Official Site" data-ch="官网">Official Site</span></a>
+                            <a href="https://github.com/vkohaupt/vokoscreenNG" target="_blank" class="tool-link secondary">📦 GitHub</a>
+                        </div>
+                    </article>
+
+                    <article class="tool-card" id="kooha" data-type="opensource" data-platforms="linux" data-price="free">
+                        <div class="tool-header">
+                            <div class="tool-logo" style="background: linear-gradient(135deg, #f472b6, #db2777);">🎨</div>
+                            <div class="tool-info">
+                                <div class="tool-name">Kooha <span class="tool-stars">⭐ 3.3k</span></div>
+                                <div class="tool-platforms"><span class="platform-badge">🐧 Linux GNOME</span></div>
+                            </div>
+                            <span class="tool-type opensource">Open Source</span>
+                        </div>
+                        <p class="tool-description" data-en="Beautiful GNOME recorder with minimal UI. Records MP4/WebM/MKV. Successor to Peek, designed for Wayland." data-ch="美观的 GNOME 录屏工具，界面极简。支持 MP4/WebM/MKV。Peek 继任者，专为 Wayland 设计。">
+                            Beautiful GNOME recorder with minimal UI. Records MP4/WebM/MKV. Successor to Peek, designed for Wayland.
+                        </p>
+                        <div class="tool-features">
+                            <span class="feature-tag">GNOME Native</span>
+                            <span class="feature-tag">Wayland</span>
+                            <span class="feature-tag">WebM/MP4</span>
+                            <span class="feature-tag">Webcam</span>
+                            <span class="feature-tag">Minimal UI</span>
+                        </div>
+                        <div class="tool-pricing">
+                            <span class="pricing-label" data-en="License:" data-ch="许可证：">License:</span>
+                            <span class="pricing-value">GPL-3.0</span>
+                            <span style="margin-left: 1rem;" class="pricing-label" data-en="Price:" data-ch="价格：">Price:</span>
+                            <span class="pricing-value" style="color: var(--secondary);">100% FREE</span>
+                        </div>
+                        <div class="tool-links">
+                            <a href="https://github.com/SeaDve/Kooha" target="_blank" class="tool-link primary">📦 GitHub</a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section id="commercial" class="section">
+                <div class="section-header">
+                    <div class="section-icon commercial">💰</div>
+                    <h2 class="section-title" data-en="Commercial & Paid Tools" data-ch="商业和付费工具">Commercial & Paid Tools</h2>
+                    <span class="section-count">20+ tools</span>
+                </div>
+
+                <div class="tools-grid" id="commercialGrid">
+                    <article class="tool-card" id="loom" data-type="commercial" data-platforms="windows,macos,chrome,ios,android" data-price="subscription">
+                        <div class="tool-header">
+                            <div class="tool-logo" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">💜</div>
+                            <div class="tool-info">
+                                <div class="tool-name">Loom <span class="tool-stars">⭐ Enterprise</span></div>
+                                <div class="tool-platforms"><span class="platform-badge">All Platforms</span></div>
+                            </div>
+                            <span class="tool-type commercial">Subscription</span>
+                        </div>
+                        <p class="tool-description" data-en="Async video messaging for modern teams. Record, share instantly, get timestamped comments. Acquired by Atlassian 2024." data-ch="现代团队的异步视频消息工具。快速录制，即时分享，获得带时间戳的评论。2024 年被 Atlassian 收购。">
+                            Async video messaging for modern teams. Record, share instantly, get timestamped comments. Acquired by Atlassian 2024.
+                        </p>
+                        <div class="tool-features">
+                            <span class="feature-tag">Async Video</span>
+                            <span class="feature-tag">Transcription</span>
+                            <span class="feature-tag">Comments</span>
+                            <span class="feature-tag">Embed</span>
+                            <span class="feature-tag">Analytics</span>
+                        </div>
+                        <div class="tool-pricing">
+                            <span class="pricing-label" data-en="Free:" data-ch="免费：">Free:</span>
+                            <span class="pricing-value" style="color: var(--secondary);">5 min/video</span>
+                            <span style="margin-left: 0.5rem;" class="pricing-label" data-en="Pro:" data-ch="专业版：">Pro:</span>
+                            <span class="pricing-value">$12.50/mo</span>
+                        </div>
+                        <div class="tool-links">
+                            <a href="https://www.loom.com" target="_blank" class="tool-link primary">🌐 <span data-en="Official Site" data-ch="官网">Official Site</span></a>
+                            <a href="https://www.loom.com/pricing" target="_blank" class="tool-link secondary">📊 <span data-en="Pricing" data-ch="定价">Pricing</span></a>
+                        </div>
+                    </article>
+
+                    <article class="tool-card" id="camtasia" data-type="commercial" data-platforms="windows,macos" data-price="subscription">
+                        <div class="tool-header">
+                            <div class="tool-logo" style="background: linear-gradient(135deg, #059669, #047857);">🎓</div>
+                            <div class="tool-info">
+                                <div class="tool-name">Camtasia <span class="tool-stars">⭐ Professional</span></div>
+                                <div class="tool-platforms"><span class="platform-badge">🪟 Windows</span><span class="platform-badge">🍎 macOS</span></div>
+                            </div>
+                            <span class="tool-type commercial">Subscription</span>
+                        </div>
+                        <p class="tool-description" data-en="Gold standard for professional tutorial videos. All-in-one recorder + editor with animations, quizzes, interactive features. TechSmith flagship since 1999." data-ch="专业教程视频的黄金标准。一体化录屏 + 编辑器，支持动画、测验和交互功能。TechSmith 自 1999 年的旗舰产品。">
+                            Gold standard for professional tutorial videos. All-in-one recorder + editor with animations, quizzes, interactive features. TechSmith flagship since 1999.
+                        </p>
+                        <div class="tool-features">
+                            <span class="feature-tag">Video Editor</span>
+                            <span class="feature-tag">Animations</span>
+                            <span class="feature-tag">Quizzes</span>
+                            <span class="feature-tag">Templates</span>
+                            <span class="feature-tag">Cursor Effects</span>
+                        </div>
+                        <div class="tool-pricing">
+                            <span class="pricing-label" data-en="License:" data-ch="许可证：">License:</span>
+                            <span class="pricing-value">Subscription Only</span>
+                            <span style="margin-left: 0.5rem;" class="pricing-label" data-en="Price:" data-ch="价格：">Price:</span>
+                            <span class="pricing-value">$179.99/yr</span>
+                        </div>
+                        <div class="tool-links">
+                            <a href="https://www.techsmith.com/video-editor.html" target="_blank" class="tool-link primary">🌐 <span data-en="Official Site" data-ch="官网">Official Site</span></a>
+                            <a href="https://www.techsmith.com/camtasia-pricing.html" target="_blank" class="tool-link secondary">📊 <span data-en="Pricing" data-ch="定价">Pricing</span></a>
+                        </div>
+                    </article>
+
+                    <article class="tool-card" id="screenflow" data-type="commercial" data-platforms="macos" data-price="perpetual">
+                        <div class="tool-header">
+                            <div class="tool-logo" style="background: linear-gradient(135deg, #0ea5e9, #0284c7);">🍎</div>
+                            <div class="tool-info">
+                                <div class="tool-name">ScreenFlow <span class="tool-stars">⭐ Mac Only</span></div>
+                                <div class="tool-platforms"><span class="platform-badge">🍎 macOS Only</span></div>
+                            </div>
+                            <span class="tool-type commercial">Perpetual</span>
+                        </div>
+                        <p class="tool-description" data-en="macOS-only professional recorder and editor. Superior quality, iOS device recording, intuitive timeline. One of few pro tools with perpetual license in 2025." data-ch="macOS 独占的专业录屏和编辑器。高质量，iOS 设备录制，直观时间线。2025 年仍提供永久许可证的少数专业工具之一。">
+                            macOS-only professional recorder and editor. Superior quality, iOS device recording, intuitive timeline. One of few pro tools with perpetual license in 2025.
+                        </p>
+                        <div class="tool-features">
+                            <span class="feature-tag">iOS Recording</span>
+                            <span class="feature-tag">Timeline Editor</span>
+                            <span class="feature-tag">Pro Quality</span>
+                            <span class="feature-tag">Annotations</span>
+                            <span class="feature-tag">Callouts</span>
+                        </div>
+                        <div class="tool-pricing">
+                            <span class="pricing-label" data-en="License:" data-ch="许可证：">License:</span>
+                            <span class="pricing-value" style="color: var(--secondary);">Perpetual</span>
+                            <span style="margin-left: 0.5rem;" class="pricing-label" data-en="Price:" data-ch="价格：">Price:</span>
+                            <span class="pricing-value">$199 one-time</span>
+                        </div>
+                        <div class="tool-links">
+                            <a href="https://www.telestream.net/screenflow" target="_blank" class="tool-link primary">🌐 <span data-en="Official Site" data-ch="官网">Official Site</span></a>
+                            <a href="https://www.telestream.net/screenflow/pricing" target="_blank" class="tool-link secondary">📊 <span data-en="Pricing" data-ch="定价">Pricing</span></a>
+                        </div>
+                    </article>
+
+                    <article class="tool-card" id="bandicam" data-type="commercial" data-platforms="windows" data-price="hybrid">
+                        <div class="tool-header">
+                            <div class="tool-logo" style="background: linear-gradient(135deg, #f59e0b, #d97706);">🎮</div>
+                            <div class="tool-info">
+                                <div class="tool-name">Bandicam <span class="tool-stars">⭐ Gaming</span></div>
+                                <div class="tool-platforms"><span class="platform-badge">🪟 Windows Only</span></div>
+                            </div>
+                            <span class="tool-type commercial">Hybrid</span>
+                        </div>
+                        <p class="tool-description" data-en="Gamer's choice for high-performance recording. Up to 480 FPS, DirectX/OpenGL capture with minimal performance impact. Perfect for game recording." data-ch="玩家的高性能录制选择。支持高达 480 FPS 游戏录制，DirectX/OpenGL 捕获对性能影响极小。非常适合游戏录制。">
+                            Gamer's choice for high-performance recording. Up to 480 FPS, DirectX/OpenGL capture with minimal performance impact. Perfect for game recording.
+                        </p>
+                        <div class="tool-features">
+                            <span class="feature-tag">480 FPS</span>
+                            <span class="feature-tag">Game Mode</span>
+                            <span class="feature-tag">DirectX</span>
+                            <span class="feature-tag">OpenGL</span>
+                            <span class="feature-tag">Device Mode</span>
+                        </div>
+                        <div class="tool-pricing">
+                            <span class="pricing-label" data-en="License:" data-ch="许可证：">License:</span>
+                            <span class="pricing-value">Subscription OR Perpetual</span>
+                            <span style="margin-left: 0.5rem;" class="pricing-label" data-en="Price:" data-ch="价格：">Price:</span>
+                            <span class="pricing-value">$33/yr or $45 one-time</span>
+                        </div>
+                        <div class="tool-links">
+                            <a href="https://www.bandicam.com" target="_blank" class="tool-link primary">🌐 <span data-en="Official Site" data-ch="官网">Official Site</span></a>
+                            <a href="https://www.bandicam.com/buy/" target="_blank" class="tool-link secondary">📊 <span data-en="Pricing" data-ch="定价">Pricing</span></a>
+                        </div>
+                    </article>
+
+                    <article class="tool-card" id="shadowplay" data-type="free" data-platforms="windows" data-price="free">
+                        <div class="tool-header">
+                            <div class="tool-logo" style="background: linear-gradient(135deg, #76b900, #5a8a00);">⚡</div>
+                            <div class="tool-info">
+                                <div class="tool-name">NVIDIA ShadowPlay <span class="tool-stars">⭐ Hardware</span></div>
+                                <div class="tool-platforms"><span class="platform-badge">🪟 Windows + NVIDIA GPU</span></div>
+                            </div>
+                            <span class="tool-type free">Free (GPU Required)</span>
+                        </div>
+                        <p class="tool-description" data-en="Hardware-accelerated for NVIDIA GPU owners. Zero performance impact with NVENC encoder. Instant replay, 4K HDR, broadcast to Twitch/YouTube." data-ch="NVIDIA GPU 用户专属的硬件加速录制。专用 NVENC 编码器实现零性能损耗。即时回放、4K HDR、直播到 Twitch/YouTube。">
+                            Hardware-accelerated for NVIDIA GPU owners. Zero performance impact with NVENC encoder. Instant replay, 4K HDR, broadcast to Twitch/YouTube.
+                        </p>
+                        <div class="tool-features">
+                            <span class="feature-tag">NVENC</span>
+                            <span class="feature-tag">Zero Impact</span>
+                            <span class="feature-tag">Instant Replay</span>
+                            <span class="feature-tag">4K HDR</span>
+                            <span class="feature-tag">Broadcast</span>
+                        </div>
+                        <div class="tool-pricing">
+                            <span class="pricing-label" data-en="Price:" data-ch="价格：">Price:</span>
+                            <span class="pricing-value" style="color: var(--secondary); font-size: 1rem;">100% FREE</span>
+                            <span style="margin-left: 0.5rem;" class="pricing-label" data-en="Requires:" data-ch="需要：">Requires:</span>
+                            <span class="pricing-value">NVIDIA GPU</span>
+                        </div>
+                        <div class="tool-links">
+                            <a href="https://www.nvidia.com/en-us/geforce/geforce-experience/" target="_blank" class="tool-link primary">🌐 <span data-en="Official Site" data-ch="官网">Official Site</span></a>
+                        </div>
+                    </article>
+
+                    <article class="tool-card" id="gamebar" data-type="free" data-platforms="windows" data-price="free">
+                        <div class="tool-header">
+                            <div class="tool-logo" style="background: linear-gradient(135deg, #107c10, #0b6b0b);">🎮</div>
+                            <div class="tool-info">
+                                <div class="tool-name">Xbox Game Bar <span class="tool-stars">⭐ Built-in</span></div>
+                                <div class="tool-platforms"><span class="platform-badge">🪟 Windows 10/11</span></div>
+                            </div>
+                            <span class="tool-type free">Built-in</span>
+                        </div>
+                        <p class="tool-description" data-en="Windows' built-in game recorder. Press Win+G for overlay controls, performance metrics, Spotify, chat. No installation needed." data-ch="Windows 内置的游戏录制工具。按 Win+G 显示录制控件、性能指标、Spotify 和聊天叠加层。无需安装。">
+                            Windows' built-in game recorder. Press Win+G for overlay controls, performance metrics, Spotify, chat. No installation needed.
+                        </p>
+                        <div class="tool-features">
+                            <span class="feature-tag">Built-in</span>
+                            <span class="feature-tag">Win+G</span>
+                            <span class="feature-tag">Overlay</span>
+                            <span class="feature-tag">FPS Counter</span>
+                            <span class="feature-tag">Spotify Widget</span>
+                        </div>
+                        <div class="tool-pricing">
+                            <span class="pricing-label" data-en="Price:" data-ch="价格：">Price:</span>
+                            <span class="pricing-value" style="color: var(--secondary); font-size: 1rem;">100% FREE</span>
+                            <span style="margin-left: 0.5rem;" class="pricing-label" data-en="Platform:" data-ch="平台：">Platform:</span>
+                            <span class="pricing-value">Windows 10+</span>
+                        </div>
+                        <div class="tool-links">
+                            <a href="https://support.microsoft.com/en-us/windows/xbox-game-bar-b3c4a2c9-35c9-e5a2-6029-54f16c1f6b5e" target="_blank" class="tool-link primary">📚 <span data-en="Learn More" data-ch="了解更多">Learn More</span></a>
+                        </div>
+                    </article>
+
+                    <article class="tool-card" id="quicktime" data-type="free" data-platforms="macos" data-price="free">
+                        <div class="tool-header">
+                            <div class="tool-logo" style="background: linear-gradient(135deg, #007aff, #0055d4);">🍎</div>
+                            <div class="tool-info">
+                                <div class="tool-name">Apple QuickTime <span class="tool-stars">⭐ Built-in</span></div>
+                                <div class="tool-platforms"><span class="platform-badge">🍎 macOS Built-in</span></div>
+                            </div>
+                            <span class="tool-type free">Built-in</span>
+                        </div>
+                        <p class="tool-description" data-en="macOS native screen recorder. File → New Screen Recording captures full screen or selection. Simple and built-in, but no system audio capture by default." data-ch="macOS 原生录屏工具。文件 → 新建屏幕录制可捕获全屏或选定区域。简洁内置，但默认缺少系统音频捕获。">
+                            macOS native screen recorder. File → New Screen Recording captures full screen or selection. Simple and built-in, but no system audio capture by default.
+                        </p>
+                        <div class="tool-features">
+                            <span class="feature-tag">Built-in</span>
+                            <span class="feature-tag">Selection Mode</span>
+                            <span class="feature-tag">No Install</span>
+                            <span class="feature-tag">Simple UI</span>
+                        </div>
+                        <div class="tool-pricing">
+                            <span class="pricing-label" data-en="Price:" data-ch="价格：">Price:</span>
+                            <span class="pricing-value" style="color: var(--secondary); font-size: 1rem;">100% FREE</span>
+                            <span style="margin-left: 0.5rem;" class="pricing-label" data-en="Note:" data-ch="注意：">Note:</span>
+                            <span class="pricing-value" style="color: var(--accent);">No System Audio</span>
+                        </div>
+                        <div class="tool-links">
+                            <a href="https://support.apple.com/guide/quicktime-player/record-your-screen-qtp247e3c5b8/mac" target="_blank" class="tool-link primary">📚 <span data-en="Learn More" data-ch="了解更多">Learn More</span></a>
+                        </div>
+                    </article>
+
+                    <article class="tool-card" id="streamlabs" data-type="hybrid" data-platforms="windows,macos" data-price="freemium">
+                        <div class="tool-header">
+                            <div class="tool-logo" style="background: linear-gradient(135deg, #805ad5, #6b46c1);">📺</div>
+                            <div class="tool-info">
+                                <div class="tool-name">Streamlabs Desktop <span class="tool-stars">⭐ OBS-based</span></div>
+                                <div class="tool-platforms"><span class="platform-badge">🪟 Windows</span><span class="platform-badge">🍎 macOS</span></div>
+                            </div>
+                            <span class="tool-type commercial">Freemium</span>
+                        </div>
+                        <p class="tool-description" data-en="Built on OBS Studio with streamer features: alerts, widgets, chat integration, themes. Free core, optional Ultra subscription for premium tools." data-ch="基于 OBS Studio 构建，为主播增加额外功能：提醒、小部件、聊天集成和主题。核心功能免费，可选 Ultra 订阅获得高级工具。">
+                            Built on OBS Studio with streamer features: alerts, widgets, chat integration, themes. Free core, optional Ultra subscription for premium tools.
+                        </p>
+                        <div class="tool-features">
+                            <span class="feature-tag">OBS Core</span>
+                            <span class="feature-tag">Alerts</span>
+                            <span class="feature-tag">Widgets</span>
+                            <span class="feature-tag">Themes</span>
+                            <span class="feature-tag">Chat Overlay</span>
+                        </div>
+                        <div class="tool-pricing">
+                            <span class="pricing-label" data-en="Free:" data-ch="免费：">Free:</span>
+                            <span class="pricing-value" style="color: var(--secondary);">Core Features</span>
+                            <span style="margin-left: 0.5rem;" class="pricing-label" data-en="Ultra:" data-ch="高级：">Ultra:</span>
+                            <span class="pricing-value">$27/mo</span>
+                        </div>
+                        <div class="tool-links">
+                            <a href="https://streamlabs.com/desktop" target="_blank" class="tool-link primary">🌐 <span data-en="Official Site" data-ch="官网">Official Site</span></a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section id="comparison" class="comparison-section section">
+                <div class="section-header">
+                    <div class="section-icon">📊</div>
+                    <h2 class="section-title" data-en="Quick Comparison Table" data-ch="快速对比表">Quick Comparison Table</h2>
+                </div>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th data-en="Tool" data-ch="工具">Tool</th>
+                            <th data-en="Type" data-ch="类型">Type</th>
+                            <th data-en="Platforms" data-ch="平台">Platforms</th>
+                            <th data-en="Price" data-ch="价格">Price</th>
+                            <th data-en="Best For" data-ch="适用场景">Best For</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr></tr>
+                            <td><strong>OBS Studio</strong></td>
+                            <td><span class="tool-type opensource" style="font-size: 0.7rem;">Open Source</span></td>
+                            <td>Win/Mac/Linux</td>
+                            <td style="color: var(--secondary);">Free</td>
+                            <td data-en="Pro streaming/recording" data-ch="专业直播/录制">Pro streaming/recording</td>
+                        </tr>
+                        <tr></tr>
+                            <td><strong>ShareX</strong></td>
+                            <td><span class="tool-type opensource" style="font-size: 0.7rem;">Open Source</span></td>
+                            <td>Windows</td>
+                            <td style="color: var(--secondary);">Free</td>
+                            <td data-en="Automation workflows" data-ch="自动化工作流">Automation workflows</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ScreenToGif</strong></td>
+                            <td><span class="tool-type opensource" style="font-size: 0.7rem;">Open Source</span></td>
+                            <td>Windows</td>
+                            <td style="color: var(--secondary);">Free</td>
+                            <td data-en="GIF bug reports" data-ch="GIF Bug 报告">GIF bug reports</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Loom</strong></td>
+                            <td><span class="tool-type commercial" style="font-size: 0.7rem;">Commercial</span></td>
+                            <td>All</td>
+                            <td>$15/mo</td>
+                            <td data-en="Async team messaging" data-ch="异步团队沟通">Async team messaging</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Camtasia</strong></td>
+                            <td><span class="tool-type commercial" style="font-size: 0.7rem;">Commercial</span></td>
+                            <td>Win/Mac</td>
+                            <td>$179/yr</td>
+                            <td data-en="Training videos" data-ch="培训视频">Training videos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ScreenFlow</strong></td>
+                            <td><span class="tool-type commercial" style="font-size: 0.7rem;">Perpetual</span></td>
+                            <td>macOS</td>
+                            <td>$199</td>
+                            <td data-en="Mac pro tutorials" data-ch="Mac 专业教程">Mac pro tutorials</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bandicam</strong></td>
+                            <td><span class="tool-type commercial" style="font-size: 0.7rem;">Hybrid</span></td>
+                            <td>Windows</td>
+                            <td>$33/yr</td>
+                            <td data-en="High-FPS gaming" data-ch="高 FPS 游戏">High-FPS gaming</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ShadowPlay</strong></td>
+                            <td><span class="tool-type free" style="font-size: 0.7rem;">Free</span></td>
+                            <td>Win+NVIDIA</td>
+                            <td style="color: var(--secondary);">Free</td>
+                            <td data-en="Zero-impact gaming" data-ch="零损耗游戏">Zero-impact gaming</td>
+                        </tr>
+                        <tr></tr>
+                            <td><strong>Xbox Game Bar</strong></td>
+                            <td><span class="tool-type free" style="font-size: 0.7rem;">Built-in</span></td>
+                            <td>Win 10/11</td>
+                            <td style="color: var(--secondary);">Free</td>
+                            <td data-en="Quick recordings" data-ch="快速录制">Quick recordings</td>
+                        </tr>
+                        <tr></tr>
+                            <td><strong>QuickTime</strong></td>
+                            <td><span class="tool-type free" style="font-size: 0.7rem;">Built-in</span></td>
+                            <td>macOS</td>
+                            <td style="color: var(--secondary);">Free</td>
+                            <td data-en="Mac quick capture" data-ch="Mac 快速捕获">Mac quick capture</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="guide" class="guide-section section">
+                <h2 class="guide-title">
+                    <span>🧭</span>
+                    <span data-en="Choosing the Right Tool" data-ch="选择合适的工具">Choosing the Right Tool</span>
+                </h2>
+
+                <div class="guide-item" onclick="scrollToTool('obs')">
+                    <span class="guide-question" data-en="I want to stream live to Twitch/YouTube" data-ch="我想直播到 Twitch/YouTube">I want to stream live to Twitch/YouTube</span>
+                    <span class="guide-answer">→ OBS Studio (free) or Streamlabs Desktop</span>
+                </div>
+                <div class="guide-item" onclick="scrollToTool('sharex')">
+                    <span class="guide-question" data-en="I want the most powerful free tool on Windows" data-ch="我要 Windows 上最强大的免费工具">I want the most powerful free tool on Windows</span>
+                    <span class="guide-answer">→ ShareX (screenshots + recording + automation)</span>
+                </div>
+                <div class="guide-item" onclick="scrollToTool('screentogif')">
+                    <span class="guide-question" data-en="I need to record GIFs for bug reports or quick demos" data-ch="我需要录制 GIF 用于 Bug 报告或快速演示">I need to record GIFs for bug reports or quick demos</span>
+                    <span class="guide-answer">→ ScreenToGif (editor included)</span>
+                </div>
+                <div class="guide-item" onclick="scrollToTool('loom')">
+                    <span class="guide-question" data-en="I want async video for remote team communication" data-ch="我要异步视频用于远程团队沟通">I want async video for remote team communication</span>
+                    <span class="guide-answer">→ Loom (comments + transcription + embed)</span>
+                </div>
+                <div class="guide-item" onclick="scrollToTool('camtasia')">
+                    <span class="guide-question" data-en="I'm creating professional training/tutorial videos" data-ch="我要创作专业培训/教程视频">I'm creating professional training/tutorial videos</span>
+                    <span class="guide-answer">→ Camtasia (editor + quizzes + animations)</span>
+                </div>
+                <div class="guide-item" onclick="scrollToTool('shadowplay')">
+                    <span class="guide-question" data-en="I have an NVIDIA GPU and want zero performance impact" data-ch="我有 NVIDIA GPU，想要零性能损耗">I have an NVIDIA GPU and want zero performance impact</span>
+                    <span class="guide-answer">→ NVIDIA ShadowPlay (hardware-accelerated)</span>
+                </div>
+                <div class="guide-item" onclick="scrollToTool('screenflow')">
+                    <span class="guide-question" data-en="I'm on macOS and want a professional perpetual license" data-ch="我在 macOS 上，想要专业永久许可证">I'm on macOS and want a professional perpetual license</span>
+                    <span class="guide-answer">→ ScreenFlow ($199 one-time)</span>
+                </div>
+                <div class="guide-item" onclick="scrollToTool('bandicam')">
+                    <span class="guide-question" data-en="I need high-FPS game recording (480 FPS)" data-ch="我要高 FPS 游戏录制 (480 FPS)">I need high-FPS game recording (480 FPS)</span>
+                    <span class="guide-answer">→ Bandicam (DirectX/OpenGL capture)</span>
+                </div>
+                <div class="guide-item" onclick="scrollToTool('quicktime')">
+                    <span class="guide-question" data-en="I'm on Mac and need a quick, no-install solution" data-ch="我在 Mac 上，需要快速无需安装的方案">I'm on Mac and need a quick, no-install solution</span>
+                    <span class="guide-answer">→ QuickTime Player (built-in)</span>
+                </div>
+                <div class="guide-item" onclick="scrollToTool('gamebar')">
+                    <span class="guide-question" data-en="I'm on Windows and want something built-in" data-ch="我在 Windows 上，想要内置方案">I'm on Windows and want something built-in</span>
+                    <span class="guide-answer">→ Xbox Game Bar (Win+G)</span>
+                </div>
+                <div class="guide-item" onclick="scrollToTool('kooha')">
+                    <span class="guide-question" data-en="I use GNOME/Wayland on Linux" data-ch="我在 Linux 上用 GNOME/Wayland">I use GNOME/Wayland on Linux</span>
+                    <span class="guide-answer">→ Kooha (minimal, native)</span>
+                </div>
+                <div class="guide-item" onclick="scrollToTool('ffmpeg')">
+                    <span class="guide-question" data-en="I want CLI control and scriptable automation" data-ch="我要命令行控制和脚本自动化">I want CLI control and scriptable automation</span>
+                    <span class="guide-answer">→ FFmpeg (powerful, cross-platform)</span>
+                </div>
+            </section>
+
+            <footer class="footer">
+                <div class="footer-content">
+                    <a href="https://github.com/your-username/awesome-screen-recorder" class="footer-link" target="_blank">GitHub</a>
+                    <span class="footer-link">|</span>
+                    <a href="#opensource" class="footer-link" data-en="Open Source" data-ch="开源工具">Open Source</a>
+                    <span class="footer-link">|</span>
+                    <a href="#commercial" class="footer-link" data-en="Commercial" data-ch="商业工具">Commercial</a>
+                    <span class="footer-link">|</span>
+                    <a href="#comparison" class="footer-link" data-en="Compare" data-ch="对比">Compare</a>
+                </div>
+                <p class="footer-copy" data-en="© 2025 Awesome Screen Recorder. Updated monthly. Made with ❤️ for creators worldwide." data-ch="© 2025 精选录屏工具合集。每月更新。为全球创作者用 ❤️ 制作。">
+                    © 2025 Awesome Screen Recorder. Updated monthly. Made with ❤️ for creators worldwide.
+                </p>
+            </footer>
+        </div>
+    </main>
+
+    <script>
+        const langBtns = document.querySelectorAll('.lang-btn');
+        let currentLang = 'en';
+
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.dataset.lang;
+                currentLang = lang;
+                langBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('[data-en][data-ch]').forEach(el => {
+                    el.textContent = el.dataset[lang];
+                });
+            });
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scrollProgress').style.width = scrolled + '%';
+
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        const searchInput = document.getElementById('searchInput');
+        const toolCards = document.querySelectorAll('.tool-card');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            toolCards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.dataset.filter;
+
+                toolCards.forEach(card => {
+                    if (filter === 'all') {
+                        card.style.display = '';
+                    } else {
+                        const type = card.dataset.type;
+                        const platforms = card.dataset.platforms || '';
+                        const price = card.dataset.price;
+                        let matches = false;
+                        if (filter === 'opensource' && type === 'opensource') matches = true;
+                        if (filter === 'commercial' && (type === 'commercial' || type === 'hybrid')) matches = true;
+                        if (filter === 'free' && (price === 'free' || type === 'free')) matches = true;
+                        if (filter === 'windows' && platforms.includes('windows')) matches = true;
+                        if (filter === 'macos' && platforms.includes('macos')) matches = true;
+                        if (filter === 'linux' && platforms.includes('linux')) matches = true;
+                        card.style.display = matches ? '' : 'none';
+                    }
+                });
+            });
+        });
+
+        function scrollToTool(toolId) {
+            const element = document.getElementById(toolId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                element.classList.add('highlight');
+                setTimeout(() => element.classList.remove('highlight'), 2000);
+            }
+        }
+
+        window.scrollToTool = scrollToTool;
+
+        // Dynamic base path for GitHub Pages
+        function setBasePath() {
+            const repoName = 'awesome-screen-recorder';
+            const path = window.location.pathname;
+            // If path contains repo name, set it as base
+            if (path.includes(repoName)) {
+                const base = path.substring(0, path.indexOf(repoName) + repoName.length + 1);
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href');
+                        const target = document.querySelector(targetId);
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            // Update URL without page reload
+                            history.pushState(null, null, targetId);
+                        }
+                    });
+                });
+            }
+        }
+        setBasePath();
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('slide-up');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        toolCards.forEach(card => observer.observe(card));
+    </script>
+</body>
+</html>
